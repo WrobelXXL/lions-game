@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lions-Game – Galgenmaennchen Multiplayer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ── Namenseingabe ─────────────────────────────────────────── -->
+    <div id="join-screen" class="modal">
+        <form id="join-form" class="modal-box">
+            <h1>&#127919; Galgenmaennchen</h1>
+            <p class="muted">Gib dir einen Namen, um der Lobby beizutreten.</p>
+            <input id="name-input" type="text" maxlength="16" placeholder="Dein Name" autocomplete="off" autofocus>
+            <button type="submit" class="btn btn-primary">Beitreten</button>
+            <p id="join-error" class="error-text"></p>
+        </form>
+    </div>
+
+    <!-- ── Hauptlayout: Lobby | Spiel | Chat ─────────────────────── -->
+    <div id="app" class="hidden">
+        <aside id="lobby" class="panel">
+            <h2>Lobby <span id="player-count" class="badge">0</span></h2>
+            <ul id="player-list"></ul>
+            <div id="lobby-actions">
+                <button id="start-btn" class="btn btn-primary hidden">&#9654; Spiel starten</button>
+                <p id="lobby-hint" class="muted small"></p>
+            </div>
+        </aside>
+
+        <main id="game-container" class="panel">
+            <header id="game-header">
+                <h1>&#127919; Galgenmaennchen</h1>
+                <div id="status-bar">
+                    <span id="round-info"></span>
+                    <span id="timer" class="hidden">&#9201; <b id="timer-value">0</b>s</span>
+                </div>
+                <p id="status-text"></p>
+            </header>
+
+            <!-- Wort eingeben (nur Wortgeber) -->
+            <form id="word-form" class="hidden">
+                <p>Du bist dran! Gib ein Wort ein, das die anderen erraten sollen:</p>
+                <div class="row">
+                    <input id="word-input" type="text" maxlength="40" placeholder="Geheimes Wort" autocomplete="off">
+                    <button type="submit" class="btn btn-primary">Fertig</button>
+                </div>
+                <p class="muted small">Nur Buchstaben (a–z, ä, ö, ü, ß), keine Leerzeichen. Ohne Eingabe wird nach 45 s ein Zufallswort genommen.</p>
+            </form>
+
+            <!-- Leben abziehen (nur Wortgeber) -->
+            <div id="penalty-panel" class="hidden">
+                <p id="penalty-text"></p>
+                <div id="penalty-buttons"></div>
+                <p class="muted small">Automatische Entscheidung in <b id="penalty-timer">0</b>s</p>
+            </div>
+
+            <div id="game-area">
+                <div id="canvas-wrapper">
+                    <canvas id="hangman-canvas" width="320" height="360"></canvas>
+                </div>
+                <div id="info-panel">
+                    <div id="word-display"></div>
+                    <div id="wrong-section">
+                        <h3>Falsche Buchstaben: <span id="wrong-count"></span></h3>
+                        <div id="wrong-letters"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="keyboard"></div>
+        </main>
+
+        <aside id="chat" class="panel">
+            <h2>Chat</h2>
+            <div id="chat-messages"></div>
+            <form id="chat-form">
+                <input id="chat-input" type="text" maxlength="200" placeholder="Nachricht oder ganzes Wort raten…" autocomplete="off">
+                <button type="submit" class="btn btn-primary">&#10148;</button>
+            </form>
+        </aside>
+    </div>
+
+    <!-- ── Ergebnis-Overlay ──────────────────────────────────────── -->
+    <div id="overlay" class="modal hidden">
+        <canvas id="confetti-canvas"></canvas>
+        <div id="overlay-box" class="modal-box">
+            <h2 id="overlay-title"></h2>
+            <div id="overlay-message"></div>
+            <button id="overlay-btn" class="btn btn-primary hidden"></button>
+        </div>
+    </div>
+
+    <!-- Mauszeiger der anderen Spieler -->
+    <div id="cursor-layer"></div>
+    <div id="toast" class="hidden"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

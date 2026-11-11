@@ -1,14 +1,21 @@
-# Lions-Game (Galgenmaennchen) - statische Webseite mit nginx ausliefern
-FROM nginx:alpine
+# Lions-Game (Galgenmaennchen Multiplayer) - Node.js-Server mit WebSockets
+FROM node:22-alpine
 
-# Standard-Inhalt von nginx entfernen
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Dateien an die Pfade kopieren, die index.html erwartet
-COPY index.html /usr/share/nginx/html/index.html
-COPY style.css  /usr/share/nginx/html/css/style.css
-COPY script.js  /usr/share/nginx/html/js/script.js
+# Erst nur die Paketdateien kopieren -> Docker-Cache fuer "npm ci"
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 
-EXPOSE 80
+# Restlichen Code kopieren
+COPY server.js words.js ./
+COPY public ./public
 
-CMD ["nginx", "-g", "daemon off;"]
+ENV NODE_ENV=production
+ENV PORT=3000
+EXPOSE 3000
+
+# Nicht als root laufen
+USER node
+
+CMD ["node", "server.js"]

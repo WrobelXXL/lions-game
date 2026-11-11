@@ -4,5 +4,7 @@ services:
     image: lions-game:latest
     container_name: lions-game
     ports:
-      - "8080:80"
+      - "8082:3000"
+    environment:
+      - PORT=3000
     restart: unless-stopped
