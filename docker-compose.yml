@@ -1,0 +1,8 @@
+services:
+  lions-game:
+    build: .
+    image: lions-game:latest
+    container_name: lions-game
+    ports:
+      - "8080:80"
+    restart: unless-stopped
